@@ -5,7 +5,7 @@ function PullRefresh (option) {
 	this._init();
 }
 PullRefresh.prototype._init = function() {
-	console.log(document.documentElement.scrollTop)
+	console.log(window.pageYOffset)
 	this.touchEvent();
 }
 PullRefresh.prototype.touchEvent = function() {
