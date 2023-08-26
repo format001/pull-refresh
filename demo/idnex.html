@@ -95,19 +95,33 @@
 <script src='./pullRefresh.js'></script>
 <script>
     let doc = document,
+        pullContainer = doc.getElementsByClassName('container')[0],
         pullArrow = doc.getElementsByClassName('arrowIcon')[0],
         loadingIcon = doc.getElementsByClassName('loadingIcon')[0],
         pullText = doc.getElementsByClassName('text')[0],
-        J_tpl = doc.getElementById('J_tpl').innerText,
-        OList = doc.getElementsByClassName('list')[0];
-    console.log(Array(1))
-    console.log(Array(1))
-    function initHtmlData (tpl, array) {
+        OList = doc.getElementsByClassName('list')[0],
+        J_tpl = doc.getElementById('J_tpl').textContent;
 
+
+    initHtmlData(OList, J_tpl);
+    function initHtmlData (container, tpl, length = 10) {
+        let str = '',
+            number = 0,
+            reg = /\{\{(.*?)\}\}/g;
+
+        while (number < length && ++ number) {
+            str += tpl.replace(reg, (node, key) => ({
+                    className: 'item' + number,
+                    content: 'JS++  ' + number
+                }[key.trim()]
+            ));
+        }
+
+        OList.innerHTML = str;
     }
 
     let pullRefresh = new PullRefresh({
-        pullContainer: document.querySelector('.container'),
+        pullContainer: pullContainer,
         MaxLoadingHeight: 60,
         transition: '.3s ease',
         loadingBefore: function (hasScroll) {
