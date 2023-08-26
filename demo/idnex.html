@@ -5,29 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>pullRefresh</title>
     <style>
-        *{
+        * {
             border: 0;
             margin: 0;
             padding: 0;
         }
-        .container{
+
+        .container {
             width: 100%;
             height: 100%;
-            margin-top:-60px;
+            margin-top: -60px;
         }
-        .loadingContainer{
+
+        .loadingContainer {
             position: relative;
             width: 100%;
             height: 60px;
             border-bottom: 1px solid #f8f8f8;
             background-color: #f8f8f8;
         }
-        .content{
+
+        .content {
             position: relative;
             top: 19px;
             text-align: center;
         }
-        .arrowIcon{
+
+        .arrowIcon {
             display: inline-block;
             width: 20px;
             height: 20px;
@@ -36,26 +40,34 @@
             background: url(../img/arrow.png) no-repeat;
             background-size: 100%;
         }
-        .loadingIcon{
+
+        .loadingIcon {
             display: inline-block;
             width: 20px;
             height: 20px;
             margin-right: 10px;
             vertical-align: bottom;
-            background: url(../img/loading.png)no-repeat;
+            background: url(../img/loading.png) no-repeat;
             background-size: 100%;
             animation: loading 1.5s linear infinite;
         }
-        .text{
+
+        .text {
             display: inline-block;
             vertical-align: bottom;
             font-size: 14px;
         }
-        @keyframes loading{
-            0%   { transform:rotate(0deg); }
-            100% { transform:rotate(360deg); }
+
+        @keyframes loading {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        li{
+
+        li {
             width: 100%;
             height: 100px;
             line-height: 100px;
@@ -75,76 +87,56 @@
             <span class="text">下拉刷新</span>
         </div>
     </div>
-    <ul class="list">
-        <li class="item1">item1</li>
-        <li class="item2">item2</li>
-        <li class="item3">item3</li>
-        <li class="item4">item4</li>
-        <li class="item5">item5</li>
-        <li class="item6">item6</li>
-        <li class="item7">item7</li>
-        <li class="item8">item8</li>
-        <li class="item9">item9</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-        <li class="item10">item10</li>
-    </ul>
+    <ul class="list"></ul>
 </div>
+<script type="text/html" id="J_tpl">
+    <li class="{{ className }}">{{ content }}</li>
+</script>
 <script src='./pullRefresh.js'></script>
 <script>
-    var container = document.querySelector('.container');
-    var loadingContainer = document.querySelector('.loadingContainer');
-    var pullArrow = document.querySelector('.arrowIcon');
-    var loadingIcon = document.querySelector('.loadingIcon');
-    var pullText = document.querySelector('.text');
-    var flag1 = true;
-    var flag2 = true;
-    var pullRefresh = new PullRefresh({
-        pullContainer: container,
-        loadingContent: loadingContainer,
-        wholePullMode: true,
-        loadingBoxPullMode: false,
+    let doc = document,
+        pullArrow = doc.getElementsByClassName('arrowIcon')[0],
+        loadingIcon = doc.getElementsByClassName('loadingIcon')[0],
+        pullText = doc.getElementsByClassName('text')[0],
+        J_tpl = doc.getElementById('J_tpl').innerText,
+        OList = doc.getElementsByClassName('list')[0];
+    console.log(Array(1))
+    console.log(Array(1))
+    function initHtmlData (tpl, array) {
+
+    }
+
+    let pullRefresh = new PullRefresh({
+        pullContainer: document.querySelector('.container'),
         MaxLoadingHeight: 60,
         transition: '.3s ease',
-        loadingBefore: function(hasScroll) {
-            if(hasScroll < 60){
-                if(flag1 == true){
-                    pullArrow.style.display = 'inline-block';
-                    pullArrow.style.transform = 'rotate(0)';
-                    pullText.innerText = '下拉刷新';
-                }
-                flag1 = false;
-                flag2 = true;
+        loadingBefore: function (hasScroll) {
+            if (hasScroll < 60) {
+                pullArrow.style.display = 'inline-block';
+                pullArrow.style.transform = 'rotate(0)';
+                pullText.innerText = '下拉刷新';
             }
         },
-        prepareLoading: function(hasScroll) {
-            if(hasScroll > 60){
-                if(flag2 == true){
-                    pullText.innerText = '释放刷新';
-                    pullArrow.style.transform = 'rotate(180deg)';
-                    pullArrow.style.transition = 'all .3s linear';
-                }
-                flag2 = false;
-                flag1 = true;
+        prepareLoading: function (hasScroll) {
+            if (hasScroll > 60) {
+                pullText.innerText = '释放刷新';
+                pullArrow.style.transform = 'rotate(180deg)';
+                pullArrow.style.transition = 'all .3s linear';
             }
         },
-        loading: function(hasScroll) {
+        loading: function (hasScroll) {
             pullArrow.style.display = 'none';
             loadingIcon.style.display = 'inline-block';
             pullText.innerText = '正在刷新..';
         },
-        ajax: function() {
+        ajax: function () {
 
         },
-        loaded: function(hasScroll) {
+        loaded: function (hasScroll) {
             loadingIcon.style.display = 'none';
             pullText.innerText = '刷新成功';
         }
-    })
+    });
 
 </script>
 </body>
